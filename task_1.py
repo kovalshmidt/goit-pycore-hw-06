@@ -26,6 +26,11 @@ class Record:
     def add_phone(self, phone_number):
         self.phones.append(Phone(phone_number))
 
+    def remove_phone(self, phone_number):
+        phone = self.find_phone(phone_number)
+        if phone:
+            self.phones.remove(phone)
+
     def edit_phone(self, old_phone, new_phone):
         phone = self.find_phone(old_phone)
         if phone:
@@ -36,7 +41,6 @@ class Record:
         for phone in self.phones:
             if phone_number == phone.value:
                 return phone
-        print(f"Phone number '{phone_number}' not found")
         return None
 
     def delete_phone(self, phone_number):
@@ -52,8 +56,6 @@ class AddressBook(UserDict):
         key = record.name.value
         if key not in self.data:
             self.data[key] = record
-        else:
-            print(f"Name '{key}' is already registered")
 
     def find(self, name) -> 'Record':
         return self.data.get(name)
@@ -61,9 +63,6 @@ class AddressBook(UserDict):
     def delete(self, name):
         if name in self.data:
             self.data.pop(name)
-            print(f"Record '{name}' deleted")
-        else:
-            print(f"No record with name '{name}' to delete")
 
 
 
@@ -93,7 +92,9 @@ for name, record in book.data.items():
 john = book.find("John")
 john.edit_phone("1234567890", "1112223333")
 
-print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
+# Remove phone
+john.remove_phone("1112223333")
+print(john)  # Виведення: Contact name: John, phones: 5555555555
 
 # Пошук конкретного телефону у записі John
 found_phone = john.find_phone("5555555555")
